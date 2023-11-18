@@ -2,7 +2,7 @@ from langchain.chat_models import ChatOllama
 
 from lwe.core.provider import Provider, PresetValue
 
-CHAT_OLLAMA_DEFAULT_MODEL = "llama2:7b-chat"
+CHAT_OLLAMA_DEFAULT_MODEL = "llama2"
 
 
 class ProviderChatOllama(Provider):
@@ -20,6 +20,9 @@ class ProviderChatOllama(Provider):
             "chat": True,
             'validate_models': False,
             'models': {
+                'llama2': {
+                    'max_tokens': 4096,
+                },
                 'llama2:7b-chat': {
                     'max_tokens': 4096,
                 },

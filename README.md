@@ -52,5 +52,5 @@ From a running LWE shell:
 
 ```
 /provider chat_ollama
-/model model llama2:7b-chat
+/model model llama2
 ```

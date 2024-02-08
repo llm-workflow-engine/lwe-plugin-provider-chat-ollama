@@ -2,7 +2,15 @@ from langchain_community.chat_models import ChatOllama
 
 from lwe.core.provider import Provider, PresetValue
 
-CHAT_OLLAMA_DEFAULT_MODEL = "llama2"
+CHAT_OLLAMA_DEFAULT_MODEL = "tinyllama"
+
+
+class CustomChatOllama(ChatOllama):
+
+    @property
+    def _llm_type(self):
+        """Return type of llm."""
+        return "chat_ollama"
 
 
 class ProviderChatOllama(Provider):
@@ -83,6 +91,12 @@ class ProviderChatOllama(Provider):
                 'zephyr:7b-beta': {
                     'max_tokens': 131072,
                 },
+                'tinyllama': {
+                    'max_tokens': 2048,
+                },
+                'tinyllama:chat': {
+                    'max_tokens': 2048,
+                },
             }
         }
 
@@ -91,7 +105,7 @@ class ProviderChatOllama(Provider):
         return CHAT_OLLAMA_DEFAULT_MODEL
 
     def llm_factory(self):
-        return ChatOllama
+        return CustomChatOllama
 
     def customization_config(self):
         return {

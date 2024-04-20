@@ -8,7 +8,7 @@ Access to [Ollama](https://ollama.ai/library) chat models.
 
 ### Ollama local server
 
-Follow the [installation instructions](https://github.com/jmorganca/ollama) for Ollama, and make sure the server is running on port `11434`.
+Follow the [installation instructions](https://github.com/ollama/ollama) for Ollama, and make sure the server is running on port `11434`.
 
 ### Plugin
 

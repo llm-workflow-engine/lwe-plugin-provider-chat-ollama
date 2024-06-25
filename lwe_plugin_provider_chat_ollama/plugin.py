@@ -27,82 +27,85 @@ class ProviderChatOllama(Provider):
         return {
             "chat": True,
             'validate_models': False,
-            'models': {
-                'llama2': {
-                    'max_tokens': 4096,
-                },
-                'llama2:7b-chat': {
-                    'max_tokens': 4096,
-                },
-                'llama2:13b-chat': {
-                    'max_tokens': 4096,
-                },
-                'llama2:70b-chat': {
-                    'max_tokens': 4096,
-                },
-                'llama2:7b-code': {
-                    'max_tokens': 4096,
-                },
-                'llama2:13b-code': {
-                    'max_tokens': 4096,
-                },
-                'llama2:34b-code': {
-                    'max_tokens': 4096,
-                },
-                'orca-mini:7b': {
-                    'max_tokens': 4096,
-                },
-                'orca-mini:13b': {
-                    'max_tokens': 4096,
-                },
-                'orca-mini:70b': {
-                    'max_tokens': 4096,
-                },
-                'vicuna:7b': {
-                    'max_tokens': 4096,
-                },
-                'vicuna:13b': {
-                    'max_tokens': 4096,
-                },
-                'vicuna:33b': {
-                    'max_tokens': 4096,
-                },
-                'wizardcoder:7b-python': {
-                    'max_tokens': 4096,
-                },
-                'wizardcoder:13b-python': {
-                    'max_tokens': 4096,
-                },
-                'wizardcoder:34b-python': {
-                    'max_tokens': 4096,
-                },
-                'starcoder:7b': {
-                    'max_tokens': 4096,
-                },
-                'starcoder:15b': {
-                    'max_tokens': 4096,
-                },
-                'sqlcoder:7b': {
-                    'max_tokens': 4096,
-                },
-                'sqlcoder:15b': {
-                    'max_tokens': 4096,
-                },
-                'zephyr:7b-beta': {
-                    'max_tokens': 131072,
-                },
-                'tinyllama': {
-                    'max_tokens': 2048,
-                },
-                'tinyllama:chat': {
-                    'max_tokens': 2048,
-                },
-            }
         }
 
     @property
     def default_model(self):
         return CHAT_OLLAMA_DEFAULT_MODEL
+
+    @property
+    def static_models(self):
+        return {
+            'llama2': {
+                'max_tokens': 4096,
+            },
+            'llama2:7b-chat': {
+                'max_tokens': 4096,
+            },
+            'llama2:13b-chat': {
+                'max_tokens': 4096,
+            },
+            'llama2:70b-chat': {
+                'max_tokens': 4096,
+            },
+            'llama2:7b-code': {
+                'max_tokens': 4096,
+            },
+            'llama2:13b-code': {
+                'max_tokens': 4096,
+            },
+            'llama2:34b-code': {
+                'max_tokens': 4096,
+            },
+            'orca-mini:7b': {
+                'max_tokens': 4096,
+            },
+            'orca-mini:13b': {
+                'max_tokens': 4096,
+            },
+            'orca-mini:70b': {
+                'max_tokens': 4096,
+            },
+            'vicuna:7b': {
+                'max_tokens': 4096,
+            },
+            'vicuna:13b': {
+                'max_tokens': 4096,
+            },
+            'vicuna:33b': {
+                'max_tokens': 4096,
+            },
+            'wizardcoder:7b-python': {
+                'max_tokens': 4096,
+            },
+            'wizardcoder:13b-python': {
+                'max_tokens': 4096,
+            },
+            'wizardcoder:34b-python': {
+                'max_tokens': 4096,
+            },
+            'starcoder:7b': {
+                'max_tokens': 4096,
+            },
+            'starcoder:15b': {
+                'max_tokens': 4096,
+            },
+            'sqlcoder:7b': {
+                'max_tokens': 4096,
+            },
+            'sqlcoder:15b': {
+                'max_tokens': 4096,
+            },
+            'zephyr:7b-beta': {
+                'max_tokens': 131072,
+            },
+            'tinyllama': {
+                'max_tokens': 2048,
+            },
+            'tinyllama:chat': {
+                'max_tokens': 2048,
+            },
+        }
 
     def prepare_messages_method(self):
         return self.prepare_messages_for_llm_chat

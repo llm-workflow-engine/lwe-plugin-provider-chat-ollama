@@ -1,3 +1,5 @@
+import requests
+
 from langchain_community.chat_models import ChatOllama
 
 from lwe.core.provider import Provider, PresetValue
@@ -26,86 +28,40 @@ class ProviderChatOllama(Provider):
     def capabilities(self):
         return {
             "chat": True,
-            'validate_models': False,
+            'validate_models': True,
         }
 
     @property
     def default_model(self):
         return CHAT_OLLAMA_DEFAULT_MODEL
 
-    @property
-    def static_models(self):
-        return {
-            'llama2': {
-                'max_tokens': 4096,
-            },
-            'llama2:7b-chat': {
-                'max_tokens': 4096,
-            },
-            'llama2:13b-chat': {
-                'max_tokens': 4096,
-            },
-            'llama2:70b-chat': {
-                'max_tokens': 4096,
-            },
-            'llama2:7b-code': {
-                'max_tokens': 4096,
-            },
-            'llama2:13b-code': {
-                'max_tokens': 4096,
-            },
-            'llama2:34b-code': {
-                'max_tokens': 4096,
-            },
-            'orca-mini:7b': {
-                'max_tokens': 4096,
-            },
-            'orca-mini:13b': {
-                'max_tokens': 4096,
-            },
-            'orca-mini:70b': {
-                'max_tokens': 4096,
-            },
-            'vicuna:7b': {
-                'max_tokens': 4096,
-            },
-            'vicuna:13b': {
-                'max_tokens': 4096,
-            },
-            'vicuna:33b': {
-                'max_tokens': 4096,
-            },
-            'wizardcoder:7b-python': {
-                'max_tokens': 4096,
-            },
-            'wizardcoder:13b-python': {
-                'max_tokens': 4096,
-            },
-            'wizardcoder:34b-python': {
-                'max_tokens': 4096,
-            },
-            'starcoder:7b': {
-                'max_tokens': 4096,
-            },
-            'starcoder:15b': {
-                'max_tokens': 4096,
-            },
-            'sqlcoder:7b': {
-                'max_tokens': 4096,
-            },
-            'sqlcoder:15b': {
-                'max_tokens': 4096,
-            },
-            'zephyr:7b-beta': {
-                'max_tokens': 131072,
-            },
-            'tinyllama': {
-                'max_tokens': 2048,
-            },
-            'tinyllama:chat': {
-                'max_tokens': 2048,
-            },
+    def fetch_models(self):
+        llm = ChatOllama()
+        models_url = f"{llm.base_url}/api/tags"
+        model_info_url = f"{llm.base_url}/api/show"
+        headers = {
+            "content-type": "application/json",
         }
+        try:
+            response = requests.get(models_url, headers=headers)
+            response.raise_for_status()
+            models_data = response.json()
+            models_list = models_data.get('models')
+            if not models_list:
+                raise ValueError('Could not retrieve models')
+            models = {}
+            for model in models_list:
+                name = model["name"]
+                data = {"name": name}
+                response = requests.post(model_info_url, headers=headers, json=data)
+                response.raise_for_status()
+                model_data = response.json()
+                context_length = next((value for key, value in model_data["model_info"].items() if key.endswith(".context_length")), None)
+                if context_length:
+                    models[name] = {'max_tokens': context_length}
+            return models
+        except requests.exceptions.RequestException as e:
+            raise ValueError(f"Could not retrieve models: {e}")
 
     def prepare_messages_method(self):
         return self.prepare_messages_for_llm_chat
